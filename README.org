@@ -1,71 +1,34 @@
-#+ATTR_HTML: title="Join the chat at https://gitter.im/IvanMalison/org-projectile"
-[[https://travis-ci.org/IvanMalison/org-projectile][file:https://travis-ci.org/IvanMalison/org-projectile.svg?branch=master]]
-[[https://gitter.im/IvanMalison/org-projectile?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge][file:https://badges.gitter.im/Join%20Chat.svg]]
-[[http://melpa.org/#/org-projectile][file:http://melpa.org/packages/org-projectile-badge.svg]]
-[[http://stable.melpa.org/#/org-projectile][file:http://stable.melpa.org/packages/org-projectile-badge.svg]]
+~org-project~ provides functions for the creation of [[http://orgmode.org/][org-mode]] TODOs that are associated with [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Projects.html][Emacs projects]].
 
-org-projectile provides functions for the creation of [[http://orgmode.org/][org-mode]] TODOs that are associated with [[https://github.com/bbatsov/projectile][projectile]] projects.
+This package is originally forked from and now heavily based on [[https://github.com/IvanMalison/org-projectile][org-projectile]].
+
 * Installation
-
-Install from MELPA with ~M-x package-install org-projectile~. See the [[https://github.com/milkypostman/melpa][melpa repository]] for details about how to set up MELPA if you have not already done so.
+Installation from MELPA is not available yet.
 * Setup
-Before using org-projectile, you must specify the file you would like to use for storing project TODOs, as well as a keybinding for taking a project note with org-capture and a global keybinding for ~org-projectile-project-todo-completing-read~. It is recommended that you start with the following configuration:
+Before using org-project, you must specify the file you would like to use for storing project =TODOs=, as well as a keybinding for taking a project note with org-capture and a global keybinding for ~org-projectile-project-todo-completing-read~. It is recommended that you start with the following configuration:
 
 #+BEGIN_SRC emacs-lisp
-(require 'org-projectile)
-(setq org-projectile-projects-file
-      "/your/path/to/an/org/file/for/storing/project/todos.org")
-(push (org-projectile-project-todo-entry) org-capture-templates)
-(setq org-agenda-files (append org-agenda-files (org-projectile-todo-files)))
-(global-set-key (kbd "C-c c") 'org-capture)
-(global-set-key (kbd "C-c n p") 'org-projectile-project-todo-completing-read)
+  (use-package org-project
+    :bind (:map project-prefix-map
+                ("t" . org-project-quick-capture)
+                ("T" . org-project-capture)))
 #+END_SRC
-
-** use-package
-Here is the same configuration expressed using jwiegley's excellent [[https://github.com/jwiegley/use-package][use-package]]:
-
-#+BEGIN_SRC emacs-lisp
-(use-package org-projectile
-  :bind (("C-c n p" . org-projectile-project-todo-completing-read)
-         ("C-c c" . org-capture))
-  :config
-  (progn
-    (setq org-projectile-projects-file
-          "/your/path/to/an/org/file/for/storing/projects.org")
-    (setq org-agenda-files (append org-agenda-files (org-projectile-todo-files)))
-    (push (org-projectile-project-todo-entry) org-capture-templates))
-  :ensure t)
-#+END_SRC
-** per-repo todo files
+** Per-repo TODO files
 If you would prefer to have an org file for each project that resides in the project directory, add the following elisp to your configuration:
 
 #+BEGIN_SRC emacs-lisp
-  (require 'org-projectile)
-  (org-projectile-per-project)
-  (setq org-projectile-per-project-filepath "my_project_todo_filename.org")
-  (setq org-agenda-files (append org-agenda-files (org-projectile-todo-files)))
-  (global-set-key (kbd "C-c c") 'org-capture)
-  (global-set-key (kbd "C-c n p") 'org-projectile-project-todo-completing-read)
+  (use-package org-project
+    :bind (:map project-prefix-map
+                ("t" . org-project-quick-capture)
+                ("T" . org-project-capture))
+    :custom
+    (org-project-todos-per-project t))
 #+END_SRC
 * Usage
-** ~org-projectile-project-todo-completing-read~
-opens a ~projectile-completing-read~ that allows the selection of a project
-heading under which to store the input that is subsequently captured in an
-~org-capture~ buffer. Completion candidates for this function are generated
-using the project list returned from ~(projectile-relevant-known-projects)~ and
-the existing headings in ~org-projectile-projects-file~.
-** ~org-projectile-project-todo-entry~
-is a function that builds an entry that can be added to ~org-capture-templates~ in order to use org-capture to make TODOs for the project to which the current buffer belongs. You can access org-capture mode with ~M-x org-capture~, but it is recommended that you bind org-capture to some key.
+** ~org-project-capture~
+Triggers ~org-capture~ using the template provided in ~org-project-capture-template~.
 
-Both of these functions will create the relevant top level heading in the [[http://orgmode.org/][org-mode]] file stored in ~org-projectile-projects-file~ if it does not exist.
-** Project headings are links
-   This means that if you run ~org-open-at-point~ when your cursor is over a linked heading, ~projectile-switch-project-action~ will be executed, and you will begin working in the relevant project. By default, emacs will prompt you about whether not to execute the elisp associated with the link. To disable this prompt, add
+** ~org-project-quick-capture~
+Prompts for a simple TODO, that is then captured using ~org-project-quick-capture-template~.
 
-#+BEGIN_SRC emacs-lisp
-(setq org-confirm-elisp-link-function nil)
-#+END_SRC
-
-to your configuration.
-* Customization
-** Author's Configuration
-The author's configuration can be found [[http://ivanmalison.github.io/dotfiles/#orgprojectile][here]]. Check it out for some ideas about how to customize org-projectile.
+Both of these functions will create the relevant top level heading in the [[http://orgmode.org/][org-mode]] file stored in ~org-project-projects-file~ if ~org-project-per-project-file~ is ~nil~, or in ~org-project-todos-per-project~ under the project root if it is ~t~.
