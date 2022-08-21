@@ -1,6 +1,6 @@
-;;; org-projectile-test.el --- org-projectile test suite -*- lexical-binding: t; -*-
+;;; org-project-test.el --- org-project test suite -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2015-2016 Ivan Malison
+;; Copyright (C) 2022 Franklin Delehelle
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -17,14 +17,13 @@
 
 ;;; Commentary:
 
-;; The unit test suite of org-projectile
+;; The unit test suite of org-project
 
 ;;; Code:
 
 (require 'ert)
-(require 'noflet)
 
-(require 'org-projectile)
+(require 'org-project)
 (setq org-adapt-indentation 1)
 
 (defun equal-as-sets (seq1 seq2)
@@ -32,29 +31,6 @@
    (-all? (lambda (element) (member element seq2)) seq1)
    (-all? (lambda (element) (member element seq1)) seq2)))
 
-;; (ert-deftest test-org-projectile-supports-various-heading-types ()
-;;   (setq org-projectile-strategy
-;;         (make-instance 'org-projectile-single-file-strategy)
-;;         org-projectile-projects-file
-;;         (concat (file-name-as-directory (expand-file-name "test/")) "test_projects.org"))
-;;   (let ((projectile-known-projects nil))
-;;     (should (equal-as-sets (occ-get-categories org-projectile-strategy)
-;;                            '("proj1" "ideas2" "test" "proj4" "proj3"
-;;                              "github-search")))))
 
-(ert-deftest org-projectile-per-project-filepath-with-function ()
-  (let ((org-projectile-strategy (make-instance 'org-projectile-per-project-strategy))
-        (projectile-known-projects '("/a" "/b"))
-        (org-projectile-per-project-filepath
-         (lambda (path)
-           (if (string-equal path "/a")
-               "OTHER.org"
-             "TODO.org"))))
-    (should (equal-as-sets (org-projectile-todo-files)
-                           '("/a/OTHER.org" "/b/TODO.org")))
-    (let ((org-projectile-per-project-filepath "COOL.org"))
-      (should (equal-as-sets (org-projectile-todo-files)
-                           '("/a/COOL.org" "/b/COOL.org"))))))
-
-(provide 'org-projectile-test)
-;;; org-projectile-test.el ends here
+(provide 'org-project-test)
+;;; org-project-test.el ends here

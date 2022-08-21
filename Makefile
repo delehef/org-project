@@ -4,7 +4,7 @@ SRCS = $(shell find .  -maxdepth 1 -name '*.el')
 OBJECTS = $(SRCS:.el=.elc)
 EMACS = $(shell sh -c 'evm bin')
 
-.PHONY: test compile recompile clean install
+.PHONY: test compile recompile clean
 
 .cask:
 	$(CASK) install
