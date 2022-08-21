@@ -3,16 +3,18 @@
 This package is originally forked from and now heavily based on [[https://github.com/IvanMalison/org-projectile][org-projectile]].
 
 * Installation
-Installation from MELPA is not available yet.
+Installation from MELPA should be shortly available.
+
 * Setup
-Before using org-project, you must specify the file you would like to use for storing project =TODOs=, as well as a keybinding for taking a project note with org-capture and a global keybinding for ~org-projectile-project-todo-completing-read~. It is recommended that you start with the following configuration:
+Before using org-project, you must specify the file you would like to use for storing projects =TODOs=. You may also wish to bind keys to =org-project= function in ~project-prefix-map~. It is recommended that you start with the following configuration:
 
 #+BEGIN_SRC emacs-lisp
-    (use-package org-project
-      :bind (:map project-prefix-map
-                  ("t" . org-project-quick-capture)
-                  ("o" . org-project-capture)
-                  ("T" . org-project-open-todos)))
+  (use-package org-project
+    :straight (org-project :type git :host github :repo "delehef/org-project")
+    :bind (:map project-prefix-map
+                ("t" . org-project-quick-capture)
+                ("T" . org-project-capture)
+                ("o" . org-project-open-todos)))
 #+END_SRC
 ** Per-repo TODO files
 If you would prefer to have an org file for each project that resides in the project directory, add the following elisp to your configuration:
