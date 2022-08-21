@@ -133,9 +133,11 @@ is called with the entered value."
         (funcall action res)
       res)))
 
-(defun org-project--capture (projectpath &optional content)
+(defun org-project--capture (projectpath &optional content goto)
   "Capture a TODO for the project located at PROJECTPATH.
-If CONTENT is provided, automatically use it as the new TODO."
+
+If CONTENT is provided, automatically use it as the new TODO.
+If GOTO is non-nil, jumpt to the capture target without capturing."
   (let* ((org-capture-templates `(("d" "default" entry
                                    (file+headline
                                     ,(org-project--get-capture-file projectpath)
@@ -144,7 +146,7 @@ If CONTENT is provided, automatically use it as the new TODO."
                                          "TEXT" content org-project-quick-capture-template)
                                       org-project-capture-template)
                                    :immediate-finish ,(not (null content))))))
-    (org-capture nil "d")))
+    (org-capture (if goto '(4) nil) "d")))
 
 ;;;###autoload
 (cl-defun org-project-quick-capture ()
@@ -159,6 +161,12 @@ If CONTENT is provided, automatically use it as the new TODO."
   "Use `org-capture' to record a TODO for the current project."
   (interactive)
   (org-project--capture (org-project--current-project)))
+
+;;;###autoload
+(defun org-project-open-todos ()
+  "Jump to the TODOs for the current project."
+  (interactive)
+  (org-project--capture (org-project--current-project) " " t))
 
 (provide 'org-project)
 ;;; org-project.el ends here

@@ -8,10 +8,11 @@ Installation from MELPA is not available yet.
 Before using org-project, you must specify the file you would like to use for storing project =TODOs=, as well as a keybinding for taking a project note with org-capture and a global keybinding for ~org-projectile-project-todo-completing-read~. It is recommended that you start with the following configuration:
 
 #+BEGIN_SRC emacs-lisp
-  (use-package org-project
-    :bind (:map project-prefix-map
-                ("t" . org-project-quick-capture)
-                ("T" . org-project-capture)))
+    (use-package org-project
+      :bind (:map project-prefix-map
+                  ("t" . org-project-quick-capture)
+                  ("o" . org-project-capture)
+                  ("T" . org-project-open-todos)))
 #+END_SRC
 ** Per-repo TODO files
 If you would prefer to have an org file for each project that resides in the project directory, add the following elisp to your configuration:
@@ -31,4 +32,7 @@ Triggers ~org-capture~ using the template provided in ~org-project-capture-templ
 ** ~org-project-quick-capture~
 Prompts for a simple TODO, that is then captured using ~org-project-quick-capture-template~.
 
-Both of these functions will create the relevant top level heading in the [[http://orgmode.org/][org-mode]] file stored in ~org-project-projects-file~ if ~org-project-per-project-file~ is ~nil~, or in ~org-project-todos-per-project~ under the project root if it is ~t~.
+** ~org-project-open-todos~
+Jump to the org-mode heading containing the TODOs for the current project.
+
+All of these functions will create the relevant top level heading in the [[http://orgmode.org/][org-mode]] file stored in ~org-project-projects-file~ if ~org-project-per-project-file~ is ~nil~, or in ~org-project-todos-per-project~ under the project root if it is ~t~.
