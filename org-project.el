@@ -28,8 +28,9 @@
 
 ;;; Code:
 
-(require 'org)
 (require 'project)
+(require 'org)
+(require 'org-capture)
 
 (defgroup org-project ()
   "Customizations for org-project."
