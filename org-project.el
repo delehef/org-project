@@ -166,7 +166,8 @@ If GOTO is non-nil, jumpt to the capture target without capturing."
 (defun org-project-open-todos ()
   "Jump to the TODOs for the current project."
   (interactive)
-  (org-project--capture (org-project--current-project) " " t))
+  (org-project--capture (org-project--current-project) " " t)
+  (org-narrow-to-subtree))
 
 (provide 'org-project)
 ;;; org-project.el ends here
