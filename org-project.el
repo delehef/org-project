@@ -117,7 +117,7 @@ TEXT will be replaced with the string prompted for."
   "Return the root of the current project if any, errors otherwise."
   (let ((project (project-current)))
     (if project
-        (cdr project)
+        (project-root project)
       (error "%s is not in a project" (buffer-name)))))
 
 (defun org-project--completing-read (prompt choices &optional action)
