@@ -18,6 +18,9 @@ Before using org-project, you must specify the file you would like to use for st
   (use-package org-project
     :straight (org-project :type git :host github :repo "delehef/org-project")
     :custom
+    ;; If invoked outside of a project, prompt for a valid project to capture for
+    (org-project-prompt-for-project t)
+
     ;; Store all TODOs in a ORG_DIRECTORY/project.org
     (org-project-per-project-file nil)
     (org-project-projects-file (concat org-directory "/projects.org"))

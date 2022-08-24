@@ -42,12 +42,20 @@
   :type '(string)
   :group 'org-project)
 
+(defcustom org-project-prompt-for-project nil
+  "Prompt for a project when none is active.
+
+If non nil, org-project functions will prompt for a valid project when called
+outside of a project. Otherwise, they will just abort."
+  :type '(bool)
+  :group 'org-project)
+
 (defcustom org-project-per-project-file "TODO.org"
   "A file relative to the project root where TODOs will be stored.
 
 This will only be used if `org-project-todos-per-project' is set; otherwise
 TODOS will be stored in `org-project-todos-file'"
-  :type '(choice string function)
+  :type '(string)
   :group 'org-project)
 
 (defcustom org-project-todos-per-project nil
@@ -117,7 +125,7 @@ TEXT will be replaced with the string prompted for."
 
 (defun org-project--current-project ()
   "Return the root of the current project if any, errors otherwise."
-  (let ((project (project-current)))
+  (let ((project (project-current org-project-prompt-for-project)))
     (if project
         (project-root project)
       (error "%s is not in a project" (buffer-name)))))
