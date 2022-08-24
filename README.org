@@ -26,7 +26,7 @@ Before using org-project, you must specify the file you would like to use for st
     (org-project-projects-file (concat org-directory "/projects.org"))
 
     ;; Or use a single file per project, PROJECT_ROOT/todos.org
-    ;; (org-project-per-project-file t)
+    ;; (org-project-todos-per-project t)
     ;; (org-project-per-project-file "todos.org")
 
     ;; Use custom capture templates
