@@ -10,24 +10,33 @@ Before using org-project, you must specify the file you would like to use for st
 
 #+BEGIN_SRC emacs-lisp
   (use-package org-project
+    :straight (org-project :type git :host github :repo "delehef/org-project"))
+#+end_src
+
+** Example Configuration
+#+begin_src emacs-lisp
+  (use-package org-project
     :straight (org-project :type git :host github :repo "delehef/org-project")
+    :custom
+    ;; Store all TODOs in a ORG_DIRECTORY/project.org
+    (org-project-per-project-file nil)
+    (org-project-projects-file (concat org-directory "/projects.org"))
+
+    ;; Or use a single file per project, PROJECT_ROOT/todos.org
+    ;; (org-project-per-project-file t)
+    ;; (org-project-per-project-file "todos.org")
+
+    ;; Use custom capture templates
+    (org-project-capture-template "* TODO %?\n%t\n") ;; Ask for a TODO and a date
+    (org-project-quick-capture-template "* TODO %? %(org-insert-time-stamp (org-read-date nil t \"+2d\"))\n") ;; Quick TODOs ae scheduled in two days
+
+    ;; Add some binding for org-project in project.el map
     :bind (:map project-prefix-map
                 ("t" . org-project-quick-capture)
                 ("T" . org-project-capture)
                 ("o" . org-project-open-todos)))
-#+END_SRC
-** Per-repo TODO files
-If you would prefer to have an org file for each project that resides in the project directory, add the following elisp to your configuration:
-
-#+BEGIN_SRC emacs-lisp
-  (use-package org-project
-    :bind (:map project-prefix-map
-                ("t" . org-project-quick-capture)
-                ("T" . org-project-capture))
-    :custom
-    (org-project-todos-per-project t))
-#+END_SRC
-* Usage
+#+end_src
+* Provided Functions
 ** ~org-project-capture~
 Triggers ~org-capture~ using the template provided in ~org-project-capture-template~.
 

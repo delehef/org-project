@@ -37,33 +37,35 @@
   :group 'org
   :prefix "org-project-")
 
-(defcustom org-project-projects-file "~/projects.org"
+(defcustom org-project-todos-file "~/projects.org"
   "The path to the file in which project TODOs will be stored."
   :type '(string)
   :group 'org-project)
 
 (defcustom org-project-per-project-file "TODO.org"
-  "A project-specific file where TODOs will be stored.
+  "A file relative to the project root where TODOs will be stored.
 
-This will only be used if `org-project-todos-per-project' is set."
+This will only be used if `org-project-todos-per-project' is set; otherwise
+TODOS will be stored in `org-project-todos-file'"
   :type '(choice string function)
   :group 'org-project)
 
 (defcustom org-project-todos-per-project nil
-  "If true, TODOs are stored in a per-project org file.
+  "Whether TODOs are stored globally or per-project.
 
-This file will be saved under the name specified in
-`org-project-per-project-file' at the root of the project."
+If non nil, TODOs for each project are stored in their own
+`org-project-per-project-file'. Otherwise, all TODOs are stored in
+`org-project-todos-file', under their project heading."
   :type '(bool)
   :group 'org-project)
 
 (defcustom org-project-capture-template "* TODO %?\n"
-  "The default capture template to use for org-project TODOs."
+  "The capture template to use for org-project TODOs."
   :type '(string)
   :group 'org-project)
 
 (defcustom org-project-quick-capture-template "* TODO TEXT\n"
-  "The default capture template to use for org-project quick TODOs.
+  "The capture template to use for org-project quick TODOs.
 
 TEXT will be replaced with the string prompted for."
   :type '(string)
@@ -98,7 +100,7 @@ TEXT will be replaced with the string prompted for."
   "Return the file PROJECTPATH TODOs depending on org-project settings."
   (if org-project-todos-per-project
       (concat projectpath org-project-per-project-file)
-    org-project-projects-file))
+    org-project-todos-file))
 
 (defun org-project--linkize-heading (heading projectpath)
   "Create an org link to PROJECTPATH with name HEADING."
