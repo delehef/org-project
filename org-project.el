@@ -177,7 +177,8 @@ If GOTO is non-nil, jumpt to the capture target without capturing."
   "Jump to the TODOs for the current project."
   (interactive)
   (org-project--capture (org-project--current-project) " " t)
-  (org-narrow-to-subtree))
+  (org-narrow-to-subtree)
+  (outline-show-subtree))
 
 (provide 'org-project)
 ;;; org-project.el ends here
